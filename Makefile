@@ -15,8 +15,8 @@
 # If switching from docker.io back to gcr.io, then you must also
 # uncomment .circleci/config.yml's 'build-image' job's gcloud
 # authentication.
-TELEPRESENCE_REGISTRY ?= docker.io/datawire
-VERSION_SUFFIX        ?= -$(OS)-$(TIME)
+TELEPRESENCE_REGISTRY ?= 405753365262.dkr.ecr.us-east-1.amazonaws.com
+VERSION_SUFFIX        ?= 
 DOCKER_PUSH           ?= docker-push
 PYTEST_ARGS           ?=
 
@@ -24,7 +24,7 @@ PYTEST_ARGS           ?=
 
 _OS := $(shell python3 -c 'from sys import platform; print({"linux": "LNX", "darwin": "OSX"}.get(platform))')
 _TIME := $(shell date +%s)
-TELEPRESENCE_VERSION := $(shell git describe --tags)$(foreach OS,$(_OS),$(foreach TIME,$(_TIME),$(VERSION_SUFFIX)))
+TELEPRESENCE_VERSION := debug
 
 default: help
 	@echo
@@ -66,10 +66,10 @@ testbench-check: $(DOCKER_PUSH)  ## Run the test suite in testbench (implies '$(
 .PHONY: testbench-check
 
 docker-build:  ## Build Docker images
-	docker build --file local-docker/Dockerfile . -t $(TELEPRESENCE_REGISTRY)/telepresence-local:$(TELEPRESENCE_VERSION)
-	docker build k8s-proxy -t $(TELEPRESENCE_REGISTRY)/telepresence-k8s:$(TELEPRESENCE_VERSION) --target telepresence-k8s
-	docker build k8s-proxy -t $(TELEPRESENCE_REGISTRY)/telepresence-k8s-priv:$(TELEPRESENCE_VERSION) --target telepresence-k8s-priv
-	docker build --file k8s-proxy/Dockerfile.ocp k8s-proxy -t $(TELEPRESENCE_REGISTRY)/telepresence-ocp:$(TELEPRESENCE_VERSION)
+	docker build --no-cache --file local-docker/Dockerfile . -t $(TELEPRESENCE_REGISTRY)/telepresence-local:$(TELEPRESENCE_VERSION)
+	docker build --no-cache k8s-proxy -t $(TELEPRESENCE_REGISTRY)/telepresence-k8s:$(TELEPRESENCE_VERSION) --target telepresence-k8s
+	#docker build --no-cache k8s-proxy -t $(TELEPRESENCE_REGISTRY)/telepresence-k8s-priv:$(TELEPRESENCE_VERSION) --target telepresence-k8s-priv
+	#docker build --file k8s-proxy/Dockerfile.ocp k8s-proxy -t $(TELEPRESENCE_REGISTRY)/telepresence-ocp:$(TELEPRESENCE_VERSION)
 .PHONY: docker-build
 
 docker-push: docker-build  ## Push Docker images to TELEPRESENCE_REGISTRY (implies 'docker-build')
@@ -92,7 +92,7 @@ virtualenv: dev-requirements.txt k8s-proxy/requirements.txt  ## Set up Python3 v
 	$(PIP) install -q -r dev-requirements.txt || $(DIRFAIL)
 	$(PIP) install -q -r k8s-proxy/requirements.txt || $(DIRFAIL)
 	$(PIP) install -q setuptools_scm || $(DIRFAIL) # Ensure subsequent line executes without error on macos
-	$(PIP) install -q git+https://github.com/datawire/sshuttle.git@telepresence || $(DIRFAIL)
+	$(PIP) install -q git+https://github.com/wheelpharaoh/sshuttle.git@telepresence || $(DIRFAIL)
 	$(PIP) install -q --no-use-pep517 -e . || $(DIRFAIL)
 
 lint: virtualenv  ## Run the linters used by CI (implies 'virtualenv')

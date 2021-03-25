@@ -151,19 +151,19 @@ def call_scout(runner: Runner, args):
 
     runner.write("Scout info: {}".format(scouted))
 
-    my_version = get_numeric_version(__version__)
-    try:
-        latest = get_numeric_version(scouted["latest_version"])
-    except (KeyError, ValueError):
-        latest = my_version
-
-    if latest > my_version:
-        message = (
-            "\nTelepresence {} is available (you're running {}). "
-            "https://www.telepresence.io/reference/changelog"
-        ).format(scouted["latest_version"], __version__)
-
-        def ver_notice():
-            runner.show(message)
-
-        runner.add_cleanup("Show version notice", ver_notice)
+    #my_version = get_numeric_version(__version__)
+    #try:
+        #latest = get_numeric_version(scouted["latest_version"])
+    #except (KeyError, ValueError):
+        #latest = my_version
+#
+    #if latest > my_version:
+        #message = (
+            #"\nTelepresence {} is available (you're running {}). "
+            #"https://www.telepresence.io/reference/changelog"
+        #).format(scouted["latest_version"], __version__)
+#
+        #def ver_notice():
+            #runner.show(message)
+#
+        #runner.add_cleanup("Show version notice", ver_notice)

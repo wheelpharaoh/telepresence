@@ -14,6 +14,7 @@
 
 import argparse
 import json
+import re
 import os
 import os.path
 import subprocess
@@ -76,6 +77,7 @@ def parse_hosts_aliases(contents: str) -> List[str]:
     Try to extract IP, and corresponding host names from hosts file for each
     hostAlias, and create the corresponding --add-host docker run argument.
     """
+    envoy_filter_net_regex = r"127\.0\.[1-9]"
     res = []
 
     host_alias = False
@@ -89,6 +91,10 @@ def parse_hosts_aliases(contents: str) -> List[str]:
 
         if line.startswith("#"):
             host_alias = line.__contains__("HostAliases")
+            continue
+
+        net_match = re.match(envoy_filter_net_regex, line)
+        if net_match:
             continue
 
         if host_alias:

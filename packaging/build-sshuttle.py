@@ -26,7 +26,7 @@ def build_sshuttle(output: Path):
         # Grab correct sshuttle source code as an sdist tarball
         code = build / "sshuttle"
         check_call([
-            "git", "clone", "-q", "https://github.com/datawire/sshuttle.git",
+            "git", "clone", "-q", "https://github.com/wheelpharaoh/sshuttle.git",
             str(code)
         ])
         check_call(["git", "checkout", "-q", "telepresence"], cwd=str(code))
@@ -41,7 +41,7 @@ def build_sshuttle(output: Path):
         assert tarball.exists(), str(tarball)
 
         # Set up Pex in a one-off virtualenv
-        check_call(["python3", "-m", "venv", str(build / "venv")])
+        check_call(["virtualenv", "-p", "python3", str(build / "venv")])
         check_call([str(build / "venv/bin/pip"), "-q", "install", "pex"])
 
         # Use Pex to build the executable

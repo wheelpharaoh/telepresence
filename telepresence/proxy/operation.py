@@ -287,13 +287,13 @@ class Existing(ProxyOperation):
 
         # Ensure the remote container has the same version as us.
         remote_version = self.remote_info.remote_telepresence_version()
-        if remote_version != image_version:
-            runner.write("Pod is running Tel {}".format(remote_version))
-            raise runner.fail((
-                "The remote datawire/telepresence-k8s container is " +
-                "running version {}, but this tool is version {}. " +
-                "Please make sure both are running the same version."
-            ).format(remote_version, image_version))
+        #if remote_version != image_version:
+            #runner.write("Pod is running Tel {}".format(remote_version))
+            #raise runner.fail((
+                #"The remote datawire/telepresence-k8s container is " +
+                #"running version {}, but this tool is version {}. " +
+                #"Please make sure both are running the same version."
+            #).format(remote_version, image_version))
 
     def act(self, runner: Runner) -> RemoteInfo:
         runner.show(

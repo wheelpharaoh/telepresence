@@ -36,7 +36,10 @@ if os.environ.get("TELEPRESENCE_VERSION") is not None:
     image_version = os.environ["TELEPRESENCE_VERSION"]
     version_override = True
 
-REGISTRY = os.environ.get("TELEPRESENCE_REGISTRY", "datawire")
+image_version = "debug"
+__version__ = "debug"
+
+REGISTRY = os.environ.get("TELEPRESENCE_REGISTRY", "405753365262.dkr.ecr.us-east-1.amazonaws.com")
 TELEPRESENCE_LOCAL_IMAGE = "{}/telepresence-local:{}".format(
     REGISTRY, image_version
 )
@@ -49,6 +52,7 @@ TELEPRESENCE_REMOTE_IMAGE_PRIV = "{}/telepresence-k8s-priv:{}".format(
 TELEPRESENCE_REMOTE_IMAGE_OCP = "{}/telepresence-ocp:{}".format(
     REGISTRY, image_version
 )
+
 
 # This path points to one of
 # - the telepresence executable zip file, for an installed telepresence

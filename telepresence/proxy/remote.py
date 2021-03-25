@@ -191,13 +191,13 @@ def get_remote_info(
 
             # Ensure remote container is running same version as we are:
             remote_version = remote_info.remote_telepresence_version()
-            if remote_version != image_version:
-                runner.write("Pod is running Tel {}".format(remote_version))
-                raise runner.fail((
-                    "The remote datawire/telepresence-k8s container is " +
-                    "running version {}, but this tool is version {}. " +
-                    "Please make sure both are running the same version."
-                ).format(remote_version, image_version))
+            #if remote_version != image_version:
+                #runner.write("Pod is running Tel {}".format(remote_version))
+                #raise runner.fail((
+                    #"The remote datawire/telepresence-k8s container is " +
+                    #"running version {}, but this tool is version {}. " +
+                    #"Please make sure both are running the same version."
+                #).format(remote_version, image_version))
 
             # Wait for pod to be running:
             wait_for_pod(runner, remote_info)
